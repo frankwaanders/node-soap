@@ -101,6 +101,30 @@ describe('SOAP Client', function() {
       }, 'http://127.0.0.1');
     });
 
+    it('should not append `:443` to the Host header if endpoints runs on `https`', function (done) {
+      soap.createClient(__dirname+'/wsdl/default_namespace.wsdl', function(err, client) {
+        assert.ok(client);
+        assert.ok(!err);
+
+        client.MyOperation({}, function() {
+          assert.equal(client.lastRequestHeaders.Host.indexOf(':443'), -1);
+          done();
+        }, null, {"test-header": 'test'});
+      }, 'https://127.0.0.1');
+    });
+
+    it('should append a port to the Host header if explicitly defined', function (done) {
+      soap.createClient(__dirname+'/wsdl/default_namespace.wsdl', function(err, client) {
+        assert.ok(client);
+        assert.ok(!err);
+
+        client.MyOperation({}, function() {
+          assert.ok(client.lastRequestHeaders.Host.indexOf(':443') > -1);
+          done();
+        }, null, {"test-header": 'test'});
+      }, 'https://127.0.0.1:443');
+    });
+
     it('should have the correct extra header in the request', function(done) {
       soap.createClient(__dirname+'/wsdl/default_namespace.wsdl', function(err, client) {
         assert.ok(client);
@@ -262,7 +286,8 @@ describe('SOAP Client', function() {
       soap.createClient(__dirname + '/wsdl/default_namespace.wsdl', function (err, client) {
         client.MyOperation({}, function(err, result) {
           assert.ok(err);
-          assert.ok(err.message.indexOf('Invalid response: 401') === 0);
+          assert.ok(err.response);
+          assert.ok(err.body);
           done();
         });
       }, baseUrl);
