@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.Dummy.com" xmlns:n="http://www.Dummy.com/Name/Types" xmlns:ns="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://www.Dummy.com">
+	<wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.Dummy.com/Common/Types" elementFormDefault="unqualified" attributeFormDefault="unqualified" xmlns:tns="http://www.Dummy.com/Common/Types">
+            <xs:complexType name="DummyResult">
+                <xs:sequence>
+                    <xs:element name="DummyList" type="tns:DummyList" minOccurs="0"/>
+                </xs:sequence>
+                <xs:attribute name="code" type="xs:string" use="optional"/>
+            </xs:complexType>
+            <xs:complexType name="Dummy">
+                <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                        <xs:attribute name="language" type="xs:language" use="optional"/>
+                    </xs:extension>
+                </xs:simpleContent>
+            </xs:complexType>
+            <xs:complexType name="DummyList">
+                <xs:sequence>
+                    <xs:element name="DummyElement" type="tns:Dummy" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="DummyFilter">
+                <xs:sequence>
+                    <xs:element name="DummyIntFilter" type="xs:string" minOccurs="0"/>
+                    <xs:element name="DummyStringFilter" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+
+            <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msgsk="http://www.Dummy.com/Common/MessageSkeleton" xmlns:n="http://www.Dummy.com/Name/Types" targetNamespace="http://www.Dummy.com/Name/Types" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.Dummy.com/Common/MessageSkeleton"/>
+
+            <xs:complexType name="type_DummyRequest">
+                <xs:complexContent>
+                    <xs:extension base="msgsk:messageSkeleton">
+                        <xs:sequence>
+                            <xs:element name="body" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:element name="DummyRequest" type="n:type_DummyRequest"/>
+            <xs:element name="DummyResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="result" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.Dummy.com/Common/MessageSkeleton" xmlns:f="http://www.Dummy.com/Common/MessageHeader" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.Dummy.com/Common/MessageHeader"/>
+            <xs:complexType name="messageSkeleton" abstract="true">
+                <xs:sequence>
+                    <xs:element name="header" type="f:messageHeader"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.Dummy.com/Common/MessageHeader" xmlns:someFieldType="http://www.Dummy.com/Common/FieldType" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+            <xs:import namespace="http://www.Dummy.com/Common/FieldType"/>
+            <xs:complexType name="messageHeader">
+                <xs:annotation>
+                    <documentation>some annotation</documentation>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element name="ChildField" type="someFieldType:GUID"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.Dummy.com/Common/FieldType" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+            <xs:simpleType name="GUID">
+                <xs:restriction base="xs:string">
+                    <xs:maxLength value="32"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+	</wsdl:types>
+    <wsdl:message name="DummyRequest">
+        <wsdl:part name="DummyRequest" element="n:DummyRequest"/>
+    </wsdl:message>
+    <wsdl:message name="DummyResponse">
+        <wsdl:part name="DummyResponse" element="n:DummyResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="DummyPortType">
+        <wsdl:operation name="Dummy">
+            <wsdl:input message="tns:DummyRequest"/>
+            <wsdl:output message="tns:DummyResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="DummyBinding" type="tns:DummyPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="Dummy">
+            <soap:operation soapAction="http://www.Dummy.com#Dummy" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="DummyService">
+        <wsdl:port name="DummyPortType" binding="tns:DummyBinding">
+            <soap:address location="http://www.Dummy.com/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
+

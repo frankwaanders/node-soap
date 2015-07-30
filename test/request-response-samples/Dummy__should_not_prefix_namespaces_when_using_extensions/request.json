@@ -1,0 +1,8 @@
+{
+  "header": {
+    "ChildField" : {
+        "$value":  "value for skeleton/childfield"
+    }
+  },
+  "body": "value for body"
+}

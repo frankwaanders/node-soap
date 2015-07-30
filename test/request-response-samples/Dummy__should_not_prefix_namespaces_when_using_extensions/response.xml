@@ -1,0 +1,8 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://www.Dummy.com" xmlns:n="http://www.Dummy.com/Name/Types" xmlns:c="http://www.Dummy.com/Common/Types">
+    <soap:Header></soap:Header>
+    <soap:Body>
+       <n:DummyResponse>
+           <result>some text</result>
+       </n:DummyResponse>
+    </soap:Body>
+</soap:Envelope>
